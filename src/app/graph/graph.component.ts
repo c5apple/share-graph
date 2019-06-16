@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HotTableRegisterer } from '@handsontable/angular';
 import { ChartType, ChartData, ChartOptions } from 'chart.js';
 import * as Chart from 'chart.js';
+import 'chartjs-plugin-colorschemes';
 
 @Component({
   selector: 'app-graph',
@@ -39,28 +40,16 @@ export class GraphComponent implements OnInit, AfterViewInit {
   data: ChartData = {
     labels: [],
     datasets: [{
-      backgroundColor: 'rgb(254, 0, 2)',
-      borderColor: 'rgb(254, 0, 2)',
       fill: false,
     }, {
-      backgroundColor: 'rgb(255, 101, 1)',
-      borderColor: 'rgb(255, 101, 1)',
       fill: false,
     }, {
-      backgroundColor: 'rgb(4, 78, 199)',
-      borderColor: 'rgb(4, 78, 199)',
       fill: false,
     }, {
-      backgroundColor: 'rgb(255, 255, 0)',
-      borderColor: 'rgb(1, 1, 1)',
       fill: false,
     }, {
-      backgroundColor: 'rgb(10, 12, 131)',
-      borderColor: 'rgb(10, 12, 131)',
       fill: false,
     }, {
-      backgroundColor: 'rgb(0, 0, 172)',
-      borderColor: 'rgb(0, 0, 172)',
       fill: false,
     }]
   };
