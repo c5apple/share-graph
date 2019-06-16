@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HotTableRegisterer } from '@handsontable/angular';
+import { ChartType, ChartData, ChartOptions } from 'chart.js';
+import * as Chart from 'chart.js';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
 
   private hotRegisterer = new HotTableRegisterer();
 
@@ -38,4 +40,31 @@ export class AppComponent {
     manualRowResize: true
   };
 
+  @ViewChild('myCanvas') myCanvas: ElementRef;
+
+  type: ChartType | string = 'line';
+  data: ChartData = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [{
+      label: "My First dataset",
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [0, 10, 5, 2, 20, 30, 45],
+    }]
+  };
+  options: ChartOptions = {};
+  chart: Chart;
+
+  ngAfterViewInit(): void {
+    const canvas = this.myCanvas.nativeElement;
+    this.drawChart(canvas);
+  }
+
+  drawChart(ctx: string | CanvasRenderingContext2D | HTMLCanvasElement | ArrayLike<CanvasRenderingContext2D | HTMLCanvasElement>) {
+    this.chart = new Chart(ctx, {
+      type: this.type,
+      data: this.data,
+      options: this.options
+    });
+  }
 }
