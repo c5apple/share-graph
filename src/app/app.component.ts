@@ -29,43 +29,31 @@ export class AppComponent implements AfterViewInit {
 
   type: ChartType | string = 'line';
   data: ChartData = {
-    labels: ["2012", "2013", "2014", "2015", "2016", "2017", "2018"],
+    labels: [],
     datasets: [{
-      label: "広",
       backgroundColor: 'rgb(254, 0, 2)',
       borderColor: 'rgb(254, 0, 2)',
       fill: false,
-      data: [],
     }, {
-      label: "巨",
       backgroundColor: 'rgb(255, 101, 1)',
       borderColor: 'rgb(255, 101, 1)',
       fill: false,
-      data: [],
     }, {
-      label: "横",
       backgroundColor: 'rgb(4, 78, 199)',
       borderColor: 'rgb(4, 78, 199)',
       fill: false,
-      data: [],
     }, {
-      label: "阪",
       backgroundColor: 'rgb(255, 255, 0)',
       borderColor: 'rgb(1, 1, 1)',
       fill: false,
-      data: [],
     }, {
-      label: "ヤ",
       backgroundColor: 'rgb(10, 12, 131)',
       borderColor: 'rgb(10, 12, 131)',
       fill: false,
-      data: [],
     }, {
-      label: "中",
       backgroundColor: 'rgb(0, 0, 172)',
       borderColor: 'rgb(0, 0, 172)',
       fill: false,
-      data: [],
     }]
   };
   options: ChartOptions = {};
@@ -126,13 +114,17 @@ export class AppComponent implements AfterViewInit {
       const transpose = a => a[0].map((_, c) => a.map(r => r[c]));
       let transData: any[] = transpose(hot.getData());
 
+      // ラベルリフレッシュ
       const labels = transData.shift();
-      // console.log('labels', labels);
+      labels.shift();
+      this.chart.data.labels = labels;
 
       // データリフレッシュ
       this.chart.data.datasets.forEach((dataset) => {
         const row = transData.shift();
-        row.shift();
+        const label = row.shift();
+
+        dataset.label = label;
         dataset.data = row;
       });
       this.chart.update();
