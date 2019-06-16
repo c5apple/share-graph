@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HotTableRegisterer } from '@handsontable/angular';
 import { ChartType, ChartData, ChartOptions } from 'chart.js';
@@ -10,7 +10,7 @@ import 'chartjs-plugin-colorschemes';
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.scss']
 })
-export class GraphComponent implements OnInit, AfterViewInit {
+export class GraphComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private sub: any;
 
@@ -33,14 +33,14 @@ export class GraphComponent implements OnInit, AfterViewInit {
         this.swapChartData();
       },
       items: {
-        'row_above': {
+        row_above: {
 
         },
-        'row_below': {
+        row_below: {
 
         },
-        'sep1': { name: '---------' },
-        'col_left': {
+        sep1: { name: '---------' },
+        col_left: {
           callback: (key, selection, clickEvent) => {
             // 列追加
             this.hotRegisterer.getInstance(this.id).alter('insert_col', selection[0].start.col);
@@ -49,7 +49,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
             });
           }
         },
-        'col_right': {
+        col_right: {
           callback: (key, selection, clickEvent) => {
             // 列追加
             this.hotRegisterer.getInstance(this.id).alter('insert_col', selection[0].start.col + 1);
@@ -58,14 +58,14 @@ export class GraphComponent implements OnInit, AfterViewInit {
             });
           }
         },
-        'sep2': { name: '---------' },
-        'remove_row': {
+        sep2: { name: '---------' },
+        remove_row: {
           disabled: () => {
             return (this.hotRegisterer.getInstance(this.id).getSelectedLast()[0] === 0
               || this.hotRegisterer.getInstance(this.id).getSelectedLast()[2] === 0);
           },
         },
-        'remove_col': {
+        remove_col: {
           callback: (key, selection, clickEvent) => {
             // 列追加
             this.hotRegisterer.getInstance(this.id).alter('remove_col', selection[0].start.col);
@@ -76,18 +76,18 @@ export class GraphComponent implements OnInit, AfterViewInit {
               || this.hotRegisterer.getInstance(this.id).getSelectedLast()[3] === 0);
           }
         },
-        'sep3': { name: '---------' },
-        // 'undo': {
+        sep3: { name: '---------' },
+        // undo: {
         //   // TODO 列追加後エラーになる
         // },
-        // 'redo': {
+        // redo: {
 
         // },
-        // 'sep4': { name: '---------' },
-        'copy': {
+        // sep4: { name: '---------' },
+        copy: {
 
         },
-        'cut': {
+        cut: {
 
         }
       }
@@ -116,7 +116,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     const data = [
-      ["", "広", "巨", "横", "阪", "ヤ", "中"],
+      ['', '広', '巨', '横', '阪', 'ヤ', '中'],
       ['2012', 61, 86, 46, 55, 68, 75],
       ['2013', 69, 84, 64, 73, 57, 64],
       ['2014', 74, 82, 67, 75, 60, 67],
@@ -163,7 +163,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
     const hot = this.hotRegisterer.getInstance(this.id);
     if (hot) {
       const l = hot.countCols() - 1;
-      for (var i = 0; i < l; i++) {
+      for (let i = 0; i < l; i++) {
         this.data.datasets.push({
           fill: false
         });
@@ -180,7 +180,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
     const hot = this.hotRegisterer.getInstance(this.id);
     if (hot) {
       const transpose = a => a[0].map((_, c) => a.map(r => r[c]));
-      let transData: any[] = transpose(hot.getData());
+      const transData: any[] = transpose(hot.getData());
 
       // ラベルリフレッシュ
       const labels = transData.shift();
