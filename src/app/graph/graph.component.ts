@@ -39,19 +39,7 @@ export class GraphComponent implements OnInit, AfterViewInit {
   type: ChartType | string = 'line';
   data: ChartData = {
     labels: [],
-    datasets: [{
-      fill: false,
-    }, {
-      fill: false,
-    }, {
-      fill: false,
-    }, {
-      fill: false,
-    }, {
-      fill: false,
-    }, {
-      fill: false,
-    }]
+    datasets: []
   };
   options: ChartOptions = {};
   chart: Chart;
@@ -108,11 +96,20 @@ export class GraphComponent implements OnInit, AfterViewInit {
   }
 
   drawChart(ctx: string | CanvasRenderingContext2D | HTMLCanvasElement | ArrayLike<CanvasRenderingContext2D | HTMLCanvasElement>) {
-    this.chart = new Chart(ctx, {
-      type: this.type,
-      data: this.data,
-      options: this.options
-    });
+    const hot = this.hotRegisterer.getInstance(this.id);
+    if (hot) {
+      const l = hot.countCols() - 1;
+      for (var i = 0; i < l; i++) {
+        this.data.datasets.push({
+          fill: false
+        });
+      }
+      this.chart = new Chart(ctx, {
+        type: this.type,
+        data: this.data,
+        options: this.options
+      });
+    }
   }
 
   swapChartData() {
