@@ -1,0 +1,41 @@
+<section class="section">
+  <h5>ログイン</h5>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value, form.valid)">
+    <div class="row">
+      <div class="col s12 input-field">
+        <input id="mail" type="email" class="validate" formControlName="mail" required maxlength="256"
+          data-length="256">
+        <label for="mail">メールアドレス</label>
+        <ng-container *ngIf="form.controls['mail'].touched">
+          <span class="helper-text" *ngIf="form.controls['mail'].hasError('required')" data-error="入力してください"></span>
+          <span class="helper-text" *ngIf="form.controls['mail'].hasError('email')" data-error="Eメール形式で入力してください"></span>
+          <span class="helper-text" *ngIf="form.controls['mail'].hasError('maxLength')"
+            data-error="256文字以内で入力してください"></span>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12 input-field">
+        <input id="password" type="password" class="validate" formControlName="password" required maxlength="30"
+          data-length="30">
+        <label for="password">パスワード</label>
+        <ng-container *ngIf="form.controls['password'].touched">
+          <span class="helper-text" *ngIf="form.controls['password'].hasError('required')" data-error="入力してください"></span>
+          <span class="helper-text" *ngIf="form.controls['password'].hasError('minLength')"
+            data-error="6文字以上入力してください"></span>
+          <span class="helper-text" *ngIf="form.controls['password'].hasError('maxLength')"
+            data-error="30文字以内で入力してください"></span>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <button [disabled]="!form.valid || loading" class="btn waves-effect waves-light right"
+          type="submit">ログイン</button>
+      </div>
+    </div>
+  </form>
+</section>
