@@ -28,7 +28,71 @@ export class GraphComponent implements OnInit, AfterViewInit {
     colHeaders: true,
     rowHeaders: true,
     stretchH: 'all',
-    contextMenu: true,
+    contextMenu: {
+      callback: (key, options) => {
+        this.swapChartData();
+      },
+      items: {
+        'row_above': {
+
+        },
+        'row_below': {
+
+        },
+        'sep1': { name: '---------' },
+        'col_left': {
+          callback: (key, selection, clickEvent) => {
+            // 列追加
+            this.hotRegisterer.getInstance(this.id).alter('insert_col', selection[0].start.col);
+            this.chart.data.datasets.push({
+              fill: false
+            });
+          }
+        },
+        'col_right': {
+          callback: (key, selection, clickEvent) => {
+            // 列追加
+            this.hotRegisterer.getInstance(this.id).alter('insert_col', selection[0].start.col + 1);
+            this.chart.data.datasets.push({
+              fill: false
+            });
+          }
+        },
+        'sep2': { name: '---------' },
+        'remove_row': {
+          disabled: () => {
+            return (this.hotRegisterer.getInstance(this.id).getSelectedLast()[0] === 0
+              || this.hotRegisterer.getInstance(this.id).getSelectedLast()[2] === 0);
+          },
+        },
+        'remove_col': {
+          callback: (key, selection, clickEvent) => {
+            // 列追加
+            this.hotRegisterer.getInstance(this.id).alter('remove_col', selection[0].start.col);
+            this.chart.data.datasets.splice(selection[0].start.col - 1, 1);
+          },
+          disabled: () => {
+            return (this.hotRegisterer.getInstance(this.id).getSelectedLast()[1] === 0
+              || this.hotRegisterer.getInstance(this.id).getSelectedLast()[3] === 0);
+          }
+        },
+        'sep3': { name: '---------' },
+        // 'undo': {
+        //   // TODO 列追加後エラーになる
+        // },
+        // 'redo': {
+
+        // },
+        // 'sep4': { name: '---------' },
+        'copy': {
+
+        },
+        'cut': {
+
+        }
+      }
+    } as Handsontable.contextMenu.Settings,
+    undo: false,
     fillHandle: false,
     manualColumnResize: true,
     manualRowResize: true
