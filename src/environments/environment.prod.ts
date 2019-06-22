@@ -11,7 +11,7 @@ export const environment = {
   adsense: {
     adClient: 'ca-pub-4398400415874126',
     adSlot: 7879575666,
-    adFormat: true,
+    adFormat: 'true',
     fullWidthResponsive: true
   }
 };
